@@ -3,20 +3,20 @@ http://localhost:3000/user/
 
 
 ###
-GET http://localhost:3000/user
+GET http://localhost:3000/login
 
 
 ###
-GET http://localhost:3000/user/
+GET http://localhost:3000/user/12bef43a-3312-4225-a43f-c843abdfa55f
 
 ###
-POST http://localhost:3000/user
+POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "name": "testeSenha3",
-    "email": "testesenha3@gmail.com",
-    "password": "MatheusCamargo3"
+    "name": "batatinha1",
+    "email": "teste1234@gmail.com",
+    "password": "teste1234"
 }
 
 ###
@@ -30,7 +30,22 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/user/847c44d7-f8ec-4e1a-ad12-255a7d608cad
+DELETE http://localhost:3000/user/dff9a56c-0988-4fe2-9052-a1b028d9570a
 
 
+
+
+
+
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "teste123@gmail.com", 
+    "password": "teste123"
+}
+
+###
+GET http://localhost:3000
 
