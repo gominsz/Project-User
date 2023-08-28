@@ -1,13 +1,18 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { AuthRequest } from './models/AuthRequest';
+import { IsPublic } from './decorators/is-public.decorator';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
-  constructor(private authService: AuthService) {}
+    constructor(private readonly authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
-  }
+    @IsPublic()
+    @Post('login')
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(LocalAuthGuard)
+    Login(@Request() req: AuthRequest) {
+        return this.authService.login(req.user);
+    }
 }
