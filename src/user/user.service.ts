@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserInput } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcrypt';
+import { NotFoundException } from '@nestjs/common'; 
 
 export type User = CreateUserDto;
 
@@ -33,7 +34,7 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    const user = await this.prismaService.user.findUniqueOrThrow({
+    const user = await this.prismaService.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -41,6 +42,15 @@ export class UserService {
         email: true,
       },
     });
+    if (!user) throw new NotFoundException ('Usuario não encontrado!')
+    return user;
+  }
+
+  async findOneByEmail(email: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: { email },
+    });
+
     return user;
   }
   
