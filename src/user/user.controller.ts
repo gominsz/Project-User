@@ -2,17 +2,19 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post} from '@nes
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserInput } from './dto/update-user.dto';
+import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly useService: UserService) {}
 
-
+  @IsPublic()
   @Get()
   findAll() {
     return this.useService.findAll();
   }
 
+  @IsPublic()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {   
     return this.useService.create(createUserDto);
