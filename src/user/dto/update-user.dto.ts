@@ -1,3 +1,3 @@
 import { CreateUserDto } from './create-user.dto';
 
-export type UpdateUserInput = Partial<CreateUserDto>
+export type UpdateUserInput = Partial<CreateUserDto> 

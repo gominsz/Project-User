@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserInput } from './dto/update-user.dto';
@@ -8,7 +17,6 @@ import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 export class UserController {
   constructor(private readonly useService: UserService) {}
 
-  @IsPublic()
   @Get()
   findAll() {
     return this.useService.findAll();
@@ -16,7 +24,7 @@ export class UserController {
 
   @IsPublic()
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {   
+  create(@Body() createUserDto: CreateUserDto) {
     return this.useService.create(createUserDto);
   }
 
@@ -25,11 +33,9 @@ export class UserController {
     return this.useService.findOne(id);
   }
 
-  @Patch(':id') 
-  update(
-    @Param('id') id: string, 
-    @Body()  updateUserInput:  UpdateUserInput) {
-    return this.useService.update(id,  updateUserInput);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserInput: UpdateUserInput) {
+    return this.useService.update(id, updateUserInput);
   }
 
   @HttpCode(204) // representa No content (Sem conteudo)
