@@ -10,13 +10,13 @@ GET http://localhost:3000/user
 GET http://localhost:3000/user/12bef43a-3312-4225-a43f-c843abdfa55f
 
 ###
-POST http://localhost:3000/
+POST http://localhost:3000/user
 Content-Type: application/json
 
 {
-    "name": "batata",
-    "email": "batata@gmail.com",
-    "password": "batata"
+    "name": "testetoken",
+    "email": "testetoken@gmail.com",
+    "password": "token"
 }
 
 ###
@@ -48,4 +48,20 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000
+
+
+
+###
+POST http://localhost:3000/books/newbook
+Content-Type: application/json
+
+{
+	"authors": "batatinha receitas2",
+	"publication_date": 20230312,
+	"description": "Receita de batata poh2",
+	"genres": "Cozinha2",
+	"publishing_company": "Cozinha para batatas2"
+}
+
+
 
