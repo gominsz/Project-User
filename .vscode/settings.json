@@ -1,1 +1,4 @@
-{}
+{
+    "editor.fontFamily": "Monocraft, monospace",
+    "editor.fontLigatures": true
+}
