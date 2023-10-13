@@ -16,4 +16,30 @@ model User {
   name  String
   password  String 
   auth_token String?
+
+  books Book[]
 }
+
+model Book {
+  id  String  @id  @default(uuid())
+  name String
+  authors String?
+  publication_date DateTime?
+  description String?
+  publishing_company String?
+
+  users User[]
+  geners Genres[]
+}
+
+model Genres {
+
+  id String @id @default(uuid())
+
+  name String 
+
+  books Book[] 
+
+}
+
+
