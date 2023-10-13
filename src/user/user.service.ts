@@ -3,16 +3,25 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserInput } from './dto/update-user.dto';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcrypt';
-import { NotFoundException } from '@nestjs/common'; 
+import { NotFoundException } from '@nestjs/common';
+import { Pool, createPool } from 'mysql2/promise';
 
 export type User = CreateUserDto;
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaClient) {}
-  
-  async create(createUserDto: CreateUserDto) {
+  private connection: Pool;
+  constructor(private prismaService: PrismaClient) {
+    this.connection = createPool({
+      database: 'nest',
+      host: 'localhost',
+      port: 3306,
+      password: 'root',
+      user: 'root',
+    });
+  }
 
+  async create(createUserDto: CreateUserDto) {
     const passwordHash = await hash(createUserDto.password, 10);
     const user = await this.prismaService.user.create({
       data: {
@@ -25,10 +34,8 @@ export class UserService {
 
   async findAll() {
     return this.prismaService.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
+      include: {
+        books: true,
       },
     });
   }
@@ -42,7 +49,7 @@ export class UserService {
         email: true,
       },
     });
-    if (!user) throw new NotFoundException ('Usuario não encontrado!')
+    if (!user) throw new NotFoundException('Usuario não encontrado!');
     return user;
   }
 
@@ -53,7 +60,6 @@ export class UserService {
 
     return user;
   }
-  
 
   async update(id: string, updateUserInput: UpdateUserInput) {
     return this.prismaService.user.update({
@@ -64,7 +70,7 @@ export class UserService {
 
   async remove(id: string) {
     return this.prismaService.user.delete({
-      where: { id }
+      where: { id },
     });
   }
 }
