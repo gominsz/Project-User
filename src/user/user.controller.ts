@@ -17,13 +17,11 @@ import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 export class UserController {
   constructor(private readonly useService: UserService) {}
 
-  @IsPublic()
   @Get()
   findAll() {
     return this.useService.findAll();
   }
 
-  @IsPublic()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.useService.create(createUserDto);
