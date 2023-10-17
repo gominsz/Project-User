@@ -1,3 +1,24 @@
-import { CreateUserDto } from './create-user.dto';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
-export type UpdateUserInput = Partial<CreateUserDto> 
+export class UpdateUserInput {
+  @MaxLength(255)
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsEmail()
+  @IsOptional()
+  email: string;
+
+  @IsOptional()
+  password: string;
+
+  @IsOptional()
+  book_id?: string;
+}
