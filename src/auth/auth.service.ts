@@ -1,8 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { UserPayload } from './models/UserPayload';
-import { User } from '../user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from './models/UserTokens';
 
@@ -13,10 +11,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  login(user: { email: string; password: string }): UserToken {
+  async login(user: { email: string; password: string }): Promise<UserToken> {
     //Transforma o user em um JWT
-    const userFinded = this.userService.findOneByEmail(user.email);
-
+    const userFinded = await this.userService.findOneByEmail(user.email);
+    console.log(userFinded);
     const jwtToken = this.jwtService.sign(userFinded);
 
     return {
@@ -25,13 +23,15 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string) {
+    //Busca um usuario por email
     const user = await this.userService.findOneByEmail(email);
-
+    //Caso usuario exista
     if (user) {
       //checar se a senha que foi informada correspooinde a hash que esta no banco
-
+      // Valida se a senha passada é a mesma registrada no banco
       const isPasswaordValid = await bcrypt.compare(password, user.password);
 
+      //Caso a senha seja valida, retorna os dados do usuario
       if (isPasswaordValid) {
         return {
           ...user,
