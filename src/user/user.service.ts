@@ -62,10 +62,27 @@ export class UserService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
-    return this.prismaService.user.update({
-      where: { id },
-      data: updateUserInput,
-    });
+    if (updateUserInput.book_id) {
+      const book = await this.prismaService.book.findUnique({
+        where: {
+          id: updateUserInput.book_id,
+        },
+      });
+      console.log({ book });
+      return this.prismaService.user.update({
+        where: { id },
+        include: {
+          books: true,
+        },
+        data: {
+          books: {
+            connect: {
+              id: book.id,
+            },
+          },
+        },
+      });
+    }
   }
 
   async remove(id: string) {
