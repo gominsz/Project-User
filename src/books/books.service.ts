@@ -85,10 +85,28 @@ export class BooksService {
   }
 
   async update(id: string, updateBookInput: UpdateBookInput) {
-    return this.prismaService.book.update({
-      where: { id },
-      data: updateBookInput,
-    });
+    if (updateBookInput.geners_id) {
+      const geners = await this.prismaService.genres.findUnique({
+        where: {
+          id: updateBookInput.geners_id,
+        },
+      });
+      return this.prismaService.book.update({
+        where: { id },
+        include: {
+          geners: true,
+        },
+        data: {
+          authors: updateBookInput.authors,
+          description: updateBookInput.description,
+          geners: {
+            connect: {
+              id: geners.id,
+            },
+          },
+        },
+      });
+    }
   }
 
   async remove(id: string) {
