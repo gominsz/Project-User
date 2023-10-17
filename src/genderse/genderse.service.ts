@@ -28,7 +28,9 @@ export class GenderseService {
 
   async update(id: string, updateGenderseInput: UpdateGenderseDto) {
     return this.prismaService.genres.update({
-      where: { id },
+      where: {
+        id,
+      },
       data: updateGenderseInput,
     });
   }
